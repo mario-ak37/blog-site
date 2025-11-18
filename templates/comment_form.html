@@ -1,0 +1,15 @@
+{% load crispy_forms_tags %}
+<div class="mt-4">
+  <div class="p-3 rounded-3 shadow-sm bg-white" style="max-width: 500px;">
+    <h6 class="mb-3 fw-semibold">Add a Comment</h6>
+    <form action="{% url 'blog:post_comment' post.id %}"
+          method="post"
+          class="row g-2">
+      {% csrf_token %}
+      {{ form|crispy }}
+      <div class="mt-2 d-flex justify-content-end">
+        <button type="submit" class="btn btn-primary btn-sm px-3">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>

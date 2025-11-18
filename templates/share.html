@@ -4,16 +4,16 @@
   Share a post
 {% endblock title %}
 {% block content %}
-  <div class="container my-5" style="max-width: 500px;">
+  <div class="container my-5" style="max-width: 480px;">
     {% if sent %}
-      <h1 class="h4 text-success">E-mail successfully sent</h1>
-      <p>"{{ post.title }}" was successfully sent to {{ form.cleaned_data.to }}.</p>
+      <h2 class="h5 text-success mb-3">E-mail successfully sent</h2>
+      <p class="mb-0">"{{ post.title }}" was sent to {{ form.cleaned_data.to }}.</p>
     {% else %}
-      <h1 class="h4 mb-4">Share "{{ post.title }}" by e-mail</h1>
+      <h2 class="h5 mb-4">Share "{{ post.title }}" by e-mail</h2>
       <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
-        <button type="submit" class="btn btn-primary mt-2 w-100">Send e-mail</button>
+        <button type="submit" class="btn btn-primary w-100 mt-3">Send e-mail</button>
       </form>
     {% endif %}
   </div>
