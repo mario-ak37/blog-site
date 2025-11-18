@@ -4,22 +4,36 @@
 {% endblock title %}
 {% block content %}
   <div class="container py-4">
-    <h1 class="mb-3 fw-bold">{{ post.title }}</h1>
-    <p class="text-muted mb-4">Published {{ post.publish }} by {{ post.author }}</p>
+    <h1 class="mb-2 fw-bold">{{ post.title }}</h1>
+    <p class="text-muted small mb-4">Published {{ post.publish }} by {{ post.author }}</p>
     <div class="mb-4">{{ post.body|linebreaks }}</div>
     <a href="{% url 'blog:post_share' post.id %}"
-       class="btn btn-outline-primary btn-sm mb-4">Share this post</a>
+       class="btn btn-outline-primary btn-sm mb-5">Share this post</a>
+    <h2 class="h5 fw-semibold mb-3 border-bottom pb-2">Similar posts</h2>
+    <div class="list-group mb-5">
+      {% for post in similar_posts %}
+        <a href="{{ post.get_absolute_url }}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-3 px-3 border-0 border-bottom">
+          <span class="fw-semibold text-primary">{{ post.title }}</span>
+          <span class="text-muted small">&rsaquo;</span>
+        </a>
+      {% empty %}
+        <p class="text-muted">There are no similar posts yet.</p>
+      {% endfor %}
+    </div>
     {% with comments.count as total_comments %}
-      <h3 class="h6 fw-semibold mb-3">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
+      <h3 class="h6 fw-semibold mb-3 border-bottom pb-2">{{ total_comments }} comment{{ total_comments|pluralize }}</h3>
     {% endwith %}
-    {% for comment in comments %}
-      <div class="bg-light border rounded-3 p-3 mb-3">
-        <p class="text-muted small mb-1">{{ comment.name }} — {{ comment.created }}</p>
-        <div>{{ comment.body|linebreaks }}</div>
-      </div>
-    {% empty %}
-      <p class="text-muted">There are no comments yet.</p>
-    {% endfor %}
+    <div class="mb-4">
+      {% for comment in comments %}
+        <div class="p-3 mb-3 border rounded-3 bg-white shadow-sm">
+          <p class="text-muted small mb-2">{{ comment.name }} — {{ comment.created }}</p>
+          <div class="text-body">{{ comment.body|linebreaks }}</div>
+        </div>
+      {% empty %}
+        <p class="text-muted">There are no comments yet.</p>
+      {% endfor %}
+    </div>
     <div class="mt-4">{% include "comment_form.html" %}</div>
   </div>
 {% endblock content %}
