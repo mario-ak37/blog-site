@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% load blog_tags %}
+{% block title %}
+  Search
+{% endblock title %}
+{% block content %}
+  <div class="container py-5">
+    {% if query %}
+      <h1 class="mb-3">
+        Posts containing "<span class="text-primary">{{ query }}</span>"
+      </h1>
+      {% with results.count as total_results %}
+        <h5 class="text-muted mb-4">Found {{ total_results }} result{{ total_results|pluralize }}</h5>
+      {% endwith %}
+      <div class="list-group mb-4">
+        {% for post in results %}
+          <a href="{{ post.get_absolute_url }}"
+             class="list-group-item list-group-item-action mb-2">
+            <h5 class="mb-1">{{ post.title }}</h5>
+            <p class="mb-1 text-truncate">{{ post.body|markdown|truncatewords_html:20 }}</p>
+            <small class="text-muted">Published: {{ post.created|date:"F j, Y" }}</small>
+          </a>
+        {% empty %}
+          <p class="text-danger fw-medium">No posts found for your query.</p>
+        {% endfor %}
+      </div>
+      <a href="{% url 'blog:post_search' %}" class="text-primary fw-medium">&larr; Search again</a>
+    {% else %}
+      <h1 class="mb-4">Search for posts</h1>
+      <form method="get" class="mb-3" style="max-width: 500px;">
+        <div class="mb-2">{{ form.query|as_crispy_field }}</div>
+        <button type="submit" class="btn btn-primary w-100">Search</button>
+      </form>
+    {% endif %}
+  </div>
+{% endblock content %}
